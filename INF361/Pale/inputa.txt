@@ -1,0 +1,22 @@
+5
+Roi D94CF3031A3F005ACF5789B02993F826 toutou gateau
+Reine 9800BC9FF66CC50D53749D820909576D broderie aux petits points
+Fou 3DAE527258E3B89F598AB905984D937E alice merveilles
+Cavalier 9F3F08D8F475A8DBB70444C58F98E1F5 adada japlou yestu
+Tour 8EDB6BCF07FBB47C6A64602E1E989258 carree Londres Pise
+10
+artichaut 3
+articho artishow artichaud
+bavoir 0
+cameleon 2
+kameleon qameleon
+directoire 0
+elle 0
+football 1
+futsal
+galopin 0
+hure 0
+inexorable 0
+jubilatoire 1
+gubilatoire
+#$@%+-1234

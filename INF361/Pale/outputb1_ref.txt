@@ -1,0 +1,4 @@
+Il y a 20 utilisateurs.
+Il y a 100 mots de base dans le dictionnaire.
+Il y a 172 variantes des mots de base.
+Ligne finale : 1234#$-

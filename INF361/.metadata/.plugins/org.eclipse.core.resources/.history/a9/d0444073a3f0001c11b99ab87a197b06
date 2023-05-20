@@ -1,0 +1,31 @@
+
+public class PlacePublique extends Client {
+
+	public PlacePublique(String pseudo) {
+		super(pseudo);
+		this.afficher(this.getPseudo() + ":");
+	}
+
+	public PlacePublique(String pseudo, Dialogue d) {
+		super(pseudo, d);
+		this.afficher(this.getPseudo() + ":");
+	}
+
+	@Override
+	public void recevoirDuCanal(String paquet) {
+		// on affiche simplement ce qui arrive du canal
+		// this.afficher("-- " + paquet + " --");
+	}
+
+	@Override
+	public void recevoirDuClavier(String ligne) {
+		// on envoie simplement ce qui arrive du clavier
+		// this.envoyer("++ " + ligne + " ++");
+	}
+
+	public static void main(String[] args) {
+		new Canal_361(new PlacePublique("Alice")).lancer();
+		// new Canal_361(new SimpleClient("Bob", new Dialogue(400, 0))).lancer();
+	}
+	
+}

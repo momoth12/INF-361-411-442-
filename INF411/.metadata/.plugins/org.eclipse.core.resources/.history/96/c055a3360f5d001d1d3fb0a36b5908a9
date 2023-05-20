@@ -1,0 +1,361 @@
+/* TD1. Bataille
+ * Ce fichier contient deux classes :
+ * 		- Deck représente un paquet de cartes,
+ * 		- Battle représente un jeu de bataille.
+ */
+
+import java.util.LinkedList;
+
+class Deck { // représente un paquet de cartes
+
+	LinkedList<Integer> cards;
+
+	// les méthodes toString, hashCode, equals, et copy sont utilisées pour 
+  // l'affichage et les tests, vous ne devez pas les modifier.
+
+	@Override
+	public String toString() {
+		return cards.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return 0;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		Deck d = (Deck) o;
+		return cards.equals(d.cards);
+	}
+
+	Deck copy() {
+		Deck d = new Deck();
+		for (Integer card : this.cards)
+			d.cards.addLast(card);
+		return d;
+	}
+
+	// constructeur d'un paquet vide
+	Deck() {
+		cards = new LinkedList<Integer>();
+	}
+
+	// constructeur à partir du champ
+	Deck(LinkedList<Integer> cards) {
+		this.cards = cards;
+	}
+
+	// constructeur d'un paquet de cartes complet trié avec nbVals valeurs
+	Deck(int nbVals) {
+		cards = new LinkedList<Integer>();
+		for (int j = 1; j <= nbVals; j++)
+			for (int i = 0; i < 4; i++)
+				cards.add(j);
+	}
+
+	// Question 1
+
+	// prend une carte du paquet d pour la mettre à la fin du paquet courant
+	int pick(Deck d) {
+		if(d.cards.isEmpty())
+			return -1;
+		else {
+			int a=d.cards.getFirst();
+			d.cards.removeFirst();
+			this.cards.addLast(a);
+			return a;
+			
+		}
+		
+	
+	}
+
+	// prend toutes les cartes du paquet d pour les mettre à la fin du paquet courant
+	void pickAll(Deck d) {
+		
+		while(!d.cards.isEmpty()) {
+			int c=d.cards.getFirst();
+			this.cards.addLast(c);
+			d.cards.removeFirst();
+		}
+			
+		
+		
+			
+	}
+
+	// vérifie si le paquet courant est valide
+	boolean isValid(int nbVals) {
+		boolean b=true;
+		for(int c:this.cards) {
+			if(c<1||c>nbVals) {
+				b=false;
+				break;
+			}
+			
+		}
+		for(int i=1;i<=nbVals;i++) {
+			int count=0;
+			for(int c:this.cards) {
+				if(c==i)
+					count++;
+				
+			}
+			if(count>4) {
+				b=false;
+				break;
+			}
+		}
+		
+		
+		return b;
+	}
+
+	// Question 2.1
+
+	// choisit une position pour la coupe
+	int cut() {
+		
+		
+		
+        int f=0;
+		
+		for(int i=0;i<this.cards.size();i++) {
+			double b= (double) Math.random();
+			if(b<0.5)
+				f++;
+			
+		}
+		return f;
+		
+		
+		
+				
+	}
+
+	// coupe le paquet courant en deux au niveau de la position donnée par cut()
+	Deck split() {
+		int c=this.cut();
+		Deck d=new Deck();
+		for(int i=0;i<c;i++) {
+			int a=this.cards.getFirst();
+			d.cards.addLast(a);
+			this.cards.removeFirst();
+			
+		}
+		return d;
+	}
+
+	// Question 2.2
+
+	// mélange le paquet courant et le paquet d
+	void riffleWith(Deck d) {
+		int a=this.cards.size();
+		int b=d.cards.size();
+		Deck f=new Deck();
+		for(int i=0;i<a+b;i++) {
+			
+			double n= (double) Math.random();
+			double p=n*(a+b);
+			if(p<a) {
+				if(!this.cards.isEmpty()) {
+					int x=this.cards.getFirst();
+					this.cards.removeFirst();
+					f.cards.addLast(x);
+				}
+				else {
+					int x=d.cards.getFirst();
+					d.cards.removeFirst();
+					f.cards.addLast(x);
+				}
+				
+				
+			}
+			else {
+				if(!d.cards.isEmpty()) {
+					int x=d.cards.getFirst();
+					d.cards.removeFirst();
+					f.cards.addLast(x);
+				}
+				else {
+					int x=this.cards.getFirst();
+					this.cards.removeFirst();
+					f.cards.addLast(x);
+				}
+				
+			}
+			
+		}
+		
+		
+		
+		this.cards=f.cards;
+		
+		
+		
+		
+		
+	}
+
+	// Question 2.3
+
+	// mélange le paquet courant au moyen du riffle shuffle
+	void riffleShuffle(int m) {
+		for(int i=0;i<m;i++) {
+			Deck o=this.split();
+			this.riffleWith(o);
+			
+		}
+	}
+}
+
+class Battle { // représente un jeu de bataille
+
+	Deck player1;
+	Deck player2;
+	Deck trick;
+
+	// constructeur d'une bataille sans cartes
+	Battle() {
+		player1 = new Deck();
+		player2 = new Deck();
+		trick = new Deck();
+		
+	}
+	
+	// constructeur à partir des champs
+	Battle(Deck player1, Deck player2, Deck trick) {
+		this.player1 = player1;
+		this.player2 = player2;
+		this.trick = trick;
+	}
+
+	// copie la bataille
+	Battle copy() {
+		Battle r = new Battle();
+		r.player1 = this.player1.copy();
+		r.player2 = this.player2.copy();
+		r.trick = this.trick.copy();
+		return r;
+	}
+
+	// chaîne de caractères représentant la bataille
+	@Override
+	public String toString() {
+		return "Joueur 1 : " + player1.toString() + "\n" + "Joueur 2 : " + player2.toString() + "\nPli " + trick.toString();
+	}
+
+	// Question 3.1
+
+	// constructeur d'une bataille avec un jeu de cartes de nbVals valeurs
+	Battle(int nbVals) {
+		int n=4*nbVals;
+		
+		Deck pqt=new Deck(n);
+		while(!pqt.isValid(nbVals)) {
+			Deck pqt1=new Deck(n);
+			pqt.cards=pqt1.cards;
+		}
+		Deck j=new Deck();
+		Deck r=new Deck();
+		pqt.riffleShuffle(7);
+		int cpt=0;
+		
+		while(cpt<n) {
+			if(j.cards.size()==r.cards.size()) {
+				int a=pqt.cards.getFirst();
+				j.cards.add(a);
+				pqt.cards.removeFirst();
+				cpt++;
+			}
+			else {
+				int b=pqt.cards.getFirst();
+				r.cards.add(b);
+				pqt.cards.removeFirst();
+				cpt++;
+			}
+			
+			
+		}
+		this.player1=j;
+		this.player2=r;
+		this.trick=new Deck();
+		
+		
+	}
+
+	// Question 3.2
+
+	// teste si la partie est terminée
+	boolean isOver() {
+		if(this.player1.cards.isEmpty()||this.player2.cards.isEmpty())
+			return true;
+		else 
+			return false;
+					
+	}
+
+	// effectue un tour de jeu
+	boolean oneRound() {
+		if(this.isOver())
+			return false;
+		
+		
+		else {
+			
+			
+			int a=trick.pick(player1);
+			int b=trick.pick(player2);
+			while(a==b) {
+				for(int i=0;i<2;i++) {
+					if(!isOver()) {
+						a=trick.pick(player1);
+						b=trick.pick(player2);
+						
+					}
+					if(isOver()) {
+						return false;
+					}
+				}
+					
+			}
+			if(a<b) {
+				player2.pickAll(trick);
+				
+			}
+			else {
+				player1.pickAll(trick);
+			}
+			return true;
+			
+		}
+		
+	}
+
+	// Question 3.3
+
+	// renvoie le gagnant
+	int winner() {
+		throw new Error("Méthode winner() à compléter (Question 3.3)");
+	}
+
+	// effectue une partie avec un nombre maximum de coups fixé
+	int game(int turns) {
+		throw new Error("Méthode game(int turns) à compléter (Question 3.3)");
+	}
+
+	// Question 4.1
+
+	// effectue une partie sans limite de coups, mais avec détection des parties infinies
+	int game() {
+		throw new Error("Méthode game() à compléter (Question 4.1)");
+	}
+
+	// Question 4.2
+
+	// effectue des statistiques sur le nombre de parties infinies
+	static void stats(int nbVals, int nbGames) {
+		throw new Error("Méthode stats(int bvVals, int nb_of_games) à compléter (Question 4.2)");
+	}
+}

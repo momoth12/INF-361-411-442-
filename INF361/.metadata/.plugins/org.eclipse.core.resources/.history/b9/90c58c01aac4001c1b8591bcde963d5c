@@ -1,0 +1,15 @@
+import tc.TC;
+public class Tournoi {
+	
+	public static void afficheTour(int[] tab) {
+		int i;
+		int n=tab.length;
+		for(i=0;i<n;i=i+2)
+			TC.print("[ "+tab[i]+" - "+tab[i+1]+"] ");
+		
+		
+		
+	}
+
+	
+}
